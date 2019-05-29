@@ -36,7 +36,7 @@ Using [SemVer](http://semver.org/) for versioning. For the versions available, s
 
 ## Authors
 
-* **Robert Brunhage** - *Initial work* - [PurpleBooth](https://github.com/RobertBrunhage)
+* **Robert Brunhage** - *Initial work* - [RobertBrunhage](https://github.com/RobertBrunhage)
 
 See also the list of [contributors](https://github.com/RobertBrunhage/water_reminder_app_youtube/graphs/contributors) who participated in this project.
 
