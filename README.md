@@ -2,7 +2,7 @@
 
 This app is part of a YouTube devlog series that you can find on: https://www.youtube.com/c/robertbrunhage
 
-[Figma](https://www.figma.com/file/gcquKs6daV2Q61B5LXV6ZHzI/Water-reminding-app?node-id=0%3A1&viewport=751%2C283%2C0.3063705861568451)
+[Figma](https://www.figma.com/file/gcquKs6daV2Q61B5LXV6ZHzI/Water-reminding-app?node-id=0%3A1)
 [Scrum Board](https://github.com/RobertBrunhage/water_reminder_app_youtube/projects/1)
 
 ## Getting Started
