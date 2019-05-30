@@ -20,6 +20,7 @@ class WaterReminderApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Water Reminder',
         theme: ThemeData(
           primarySwatch: Colors.blue,
