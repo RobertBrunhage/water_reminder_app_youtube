@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:water_reminder_app/models/drink.dart';
+import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/user_bloc.dart';
 
 class DrinkPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userBloc = Provider.of<UserBloc>(context);
+    final drinkBloc = Provider.of<DrinkBloc>(context);
     return Column(
       children: <Widget>[
         Expanded(
@@ -37,8 +40,18 @@ class DrinkPage extends StatelessWidget {
         // placeholder for potential list of when I drank water today
         Expanded(
           flex: 3,
-          child: Container(
-            color: Colors.grey,
+          child: StreamBuilder<List<Drink>>(
+            stream: drinkBloc.outDrinks,
+            initialData: [],
+            builder: (context, snapshot) {
+              final drinks = snapshot.data;
+              return ListView.builder(
+                itemCount: drinks.length,
+                itemBuilder: (context, index) {
+                  return Text(drinks[index].amount.toString());
+                },
+              );
+            },
           ),
         ),
       ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/models/user.dart';
+import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/user_bloc.dart';
 import 'package:water_reminder_app/src/home/page_container.dart';
 
@@ -16,7 +17,9 @@ class _HomePageSetupState extends State<HomePageSetup> {
 
     Future.delayed(Duration.zero, () async {
       final userBloc = Provider.of<UserBloc>(context);
+      final drinkBloc = Provider.of<DrinkBloc>(context);
       await userBloc.init();
+      await drinkBloc.init();
     });
   }
 
