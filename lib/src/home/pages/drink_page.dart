@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:water_reminder_app/models/drink.dart';
 import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/user_bloc.dart';
+import 'package:water_reminder_app/src/widgets/water_entry_tile.dart';
 
 class DrinkPage extends StatelessWidget {
   @override
@@ -23,21 +24,29 @@ class DrinkPage extends StatelessWidget {
                   initialData: 0,
                   builder: (context, snapshot) {
                     final maxWater = snapshot.data;
-                    return Text(
-                      '0 / ${maxWater}ml',
-                      style: Theme.of(context).textTheme.title,
+                    return StreamBuilder<int>(
+                      stream: drinkBloc.outDrinksAmount,
+                      initialData: 0,
+                      builder: (context, snapshot) {
+                        final waterAmount = snapshot.data;
+                        return Text(
+                          '$waterAmount / ${maxWater}ml',
+                          style: Theme.of(context).textTheme.title,
+                        );
+                      },
                     );
                   },
                 ),
               ),
-              CircleAvatar(
-                radius: 84,
+              InkWell(
+                onTap: () => drinkBloc.drinkWater(),
+                child: CircleAvatar(
+                  radius: 84,
+                ),
               ),
             ],
           ),
         ),
-
-        // placeholder for potential list of when I drank water today
         Expanded(
           flex: 3,
           child: StreamBuilder<List<Drink>>(
@@ -48,7 +57,8 @@ class DrinkPage extends StatelessWidget {
               return ListView.builder(
                 itemCount: drinks.length,
                 itemBuilder: (context, index) {
-                  return Text(drinks[index].amount.toString());
+                  final drink = drinks[index];
+                  return WaterEntryTile(drink: drink);
                 },
               );
             },

@@ -11,10 +11,24 @@ class DrinkBloc implements BlocBase {
 
   StreamSubscription _drinkStreamSubscription;
   List<Drink> _drinksToday = List();
+  int _selectedDrinkAmount = 200;
 
   final _drinkController = BehaviorSubject<List<Drink>>();
   Function(List<Drink>) get _inDrinks => _drinkController.sink.add;
   Stream<List<Drink>> get outDrinks => _drinkController.stream;
+
+  Stream<int> get outDrinksAmount => outDrinks.map((drinks) {
+        int totalValue = 0;
+        for (Drink drink in drinks) {
+          totalValue += drink.amount;
+        }
+        return totalValue;
+      });
+
+  /// Pull request of put in the comments of how I can transform this with functional code
+  /*Stream<int> get outDrinksAmount {
+    return outDrinks.map((drinks) => drinks.reduce((a, b) => a.amount + b.amount));
+  }*/
 
   Future<void> init() async {
     final drinkStream = await FirestoreDrinkService.getDrinksStream(DateTime.now());
@@ -22,6 +36,11 @@ class DrinkBloc implements BlocBase {
       _drinksToday = querySnapshot.documents.map((doc) => Drink.fromDb(doc.data)).toList();
       _inDrinks(_drinksToday);
     });
+  }
+
+  Future<void> drinkWater() async {
+    final drink = Drink(DateTime.now(), _selectedDrinkAmount);
+    FirestoreDrinkService.drinkWater(drink);
   }
 
   @override
