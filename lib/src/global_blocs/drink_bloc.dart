@@ -33,7 +33,7 @@ class DrinkBloc implements BlocBase {
   Future<void> init() async {
     final drinkStream = await FirestoreDrinkService.getDrinksStream(DateTime.now());
     _drinkStreamSubscription = drinkStream.listen((querySnapshot) {
-      _drinksToday = querySnapshot.documents.map((doc) => Drink.fromDb(doc.data)).toList();
+      _drinksToday = querySnapshot.documents.map((doc) => Drink.fromDb(doc.data, doc.documentID)).toList();
       _inDrinks(_drinksToday);
     });
   }
@@ -41,6 +41,10 @@ class DrinkBloc implements BlocBase {
   Future<void> drinkWater() async {
     final drink = Drink(DateTime.now(), _selectedDrinkAmount);
     FirestoreDrinkService.drinkWater(drink);
+  }
+
+  Future<void> removeDrink(Drink drink) async {
+    FirestoreDrinkService.removeDrink(drink);
   }
 
   @override

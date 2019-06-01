@@ -30,4 +30,14 @@ class FirestoreDrinkService {
 
     drinksCollection.add(drink.toJson());
   }
+
+  static Future<void> removeDrink(Drink drink) async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser();
+    Firestore.instance
+        .collection(FirestoreConstants.userCollection)
+        .document(firebaseUser.uid)
+        .collection(FirestoreConstants.drinkCollection)
+        .document(drink.id)
+        .delete();
+  }
 }

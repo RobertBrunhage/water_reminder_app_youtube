@@ -11,7 +11,8 @@ class Drink {
     this.amount = 0;
   }
 
-  Drink.fromDb(Map<String, dynamic> json) {
+  Drink.fromDb(Map<String, dynamic> json, String id) {
+    this.id = id;
     this.amount = json[amountField];
     this.date = json[dateField].toDate();
   }
@@ -23,6 +24,7 @@ class Drink {
     };
   }
 
+  String id;
   int amount;
   DateTime date;
 }
