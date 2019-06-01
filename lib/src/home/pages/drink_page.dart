@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/models/drink.dart';
 import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
+import 'package:water_reminder_app/src/widgets/buttons/circle_water_button.dart';
 import 'package:water_reminder_app/src/widgets/water_entry_tile.dart';
 import 'package:water_reminder_app/src/widgets/water_today_label.dart';
 
@@ -19,9 +20,7 @@ class DrinkPage extends StatelessWidget {
               WaterTodayLabel(),
               InkWell(
                 onTap: () => drinkBloc.drinkWater(),
-                child: CircleAvatar(
-                  radius: 84,
-                ),
+                child: CircleButton(),
               ),
             ],
           ),
