@@ -16,33 +16,41 @@ class CircleButton extends StatefulWidget {
 
 class _CircleButtonState extends State<CircleButton> with SingleTickerProviderStateMixin {
   AnimationController _animationController;
+  Animation _curvedAnimation;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 2000),
+      duration: Duration(milliseconds: 800),
     );
+
+    _curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeOut);
   }
 
   @override
   Widget build(BuildContext context) {
     final drinkBloc = Provider.of<DrinkBloc>(context);
     final userbloc = Provider.of<UserBloc>(context);
-    return Container(
+
+    return MaterialButton(
+      onPressed: () => drinkBloc.drinkWater(),
+      height: 150,
+      minWidth: 150,
+      color: Colors.white,
+      elevation: 8,
+      highlightElevation: 2,
+      padding: const EdgeInsets.all(0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Container(
         height: 150,
         width: 150,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(100),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 6,
-              offset: Offset(0, 5),
-            ),
-          ],
+          shape: BoxShape.circle,
         ),
         child: StreamBuilder<int>(
           stream: userbloc.outMaxWater,
@@ -54,16 +62,15 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
               initialData: 0,
               builder: (context, snapshot) {
                 final waterConsumed = snapshot.data;
-                print(waterConsumed / totalWater);
                 _animationController.animateTo(waterConsumed / totalWater);
                 return AnimatedBuilder(
-                  animation: _animationController,
+                  animation: _curvedAnimation,
                   builder: (context, child) {
                     return CustomPaint(
                       foregroundPainter: CircleProgressPainter(
                         completeColor: Colors.blue,
                         lineColor: Colors.grey,
-                        completePercent: _animationController.value,
+                        completePercent: _curvedAnimation.value,
                       ),
                     );
                   },
@@ -71,7 +78,9 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
               },
             );
           },
-        ));
+        ),
+      ),
+    );
   }
 
   @override

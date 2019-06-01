@@ -18,10 +18,7 @@ class DrinkPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               WaterTodayLabel(),
-              InkWell(
-                onTap: () => drinkBloc.drinkWater(),
-                child: CircleButton(),
-              ),
+              CircleButton(),
             ],
           ),
         ),
