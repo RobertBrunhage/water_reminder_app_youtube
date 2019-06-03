@@ -17,7 +17,7 @@ class CupsPage extends StatelessWidget {
         CupAmountButton(amount: 300),
         CupAmountButton(amount: 400),
         CupAmountButton(amount: 500),
-        CupAmountButton(amount: 0),
+        CupAmountButton(),
       ],
     );
   }
