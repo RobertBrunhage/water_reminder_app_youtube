@@ -17,6 +17,10 @@ class DrinkBloc implements BlocBase {
   Function(List<Drink>) get _inDrinks => _drinkController.sink.add;
   Stream<List<Drink>> get outDrinks => _drinkController.stream;
 
+  final _selectedDrinkAmountController = BehaviorSubject<int>();
+  Function(int) get _inSelectedAmount => _selectedDrinkAmountController.sink.add;
+  Stream<int> get outSelectedAmount => _selectedDrinkAmountController.stream;
+
   Stream<int> get outDrinksAmount => outDrinks.map((drinks) {
         int totalValue = 0;
         for (Drink drink in drinks) {
@@ -47,9 +51,15 @@ class DrinkBloc implements BlocBase {
     FirestoreDrinkService.removeDrink(drink);
   }
 
+  set setDrinkAmount(int amount) {
+    _selectedDrinkAmount = amount;
+    _inSelectedAmount(_selectedDrinkAmount);
+  }
+
   @override
   void dispose() {
     _drinkController.close();
+    _selectedDrinkAmountController.close();
     _drinkStreamSubscription.cancel();
   }
 }
