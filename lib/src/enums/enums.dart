@@ -1,0 +1,1 @@
+enum PopupMenuChoices { signOut }

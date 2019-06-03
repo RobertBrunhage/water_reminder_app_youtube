@@ -15,7 +15,10 @@ class UserBloc implements BlocBase {
   Function(User) get _inUser => _userController.sink.add;
   Stream<User> get outUser => _userController.stream;
 
+  Stream<int> get outMaxWater => outUser.map((user) => user.maxWaterPerDay);
+
   Future<void> init() async {
+    await FirestoreUserService.checkAndCreateUser();
     await FirestoreUserService.updateLastLoggedIn();
     final userStream = await FirestoreUserService.getUserStream();
     _userStreamSubscription = userStream.listen((doc) {

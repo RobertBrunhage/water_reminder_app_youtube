@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/src/global_blocs/auth/auth_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/user_bloc.dart';
 import 'package:water_reminder_app/src/root_page.dart';
 
@@ -18,8 +19,13 @@ class WaterReminderApp extends StatelessWidget {
           builder: (_) => UserBloc(),
           dispose: (_, userBloc) => userBloc.dispose(),
         ),
+        Provider<DrinkBloc>(
+          builder: (_) => DrinkBloc(),
+          dispose: (_, drinkBloc) => drinkBloc.dispose(),
+        ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Water Reminder',
         theme: ThemeData(
           primarySwatch: Colors.blue,
