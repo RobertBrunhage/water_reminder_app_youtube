@@ -32,7 +32,6 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     final drinkBloc = Provider.of<DrinkBloc>(context);
-    final userbloc = Provider.of<UserBloc>(context);
 
     return MaterialButton(
       onPressed: () => drinkBloc.drinkWater(),
@@ -45,40 +44,15 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(100),
       ),
-      child: Container(
-        height: 150,
-        width: 150,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-        ),
-        child: StreamBuilder<int>(
-          stream: userbloc.outMaxWater,
-          initialData: 1,
-          builder: (context, snapshot) {
-            final totalWater = snapshot.data;
-            return StreamBuilder<int>(
-              stream: drinkBloc.outDrinksAmount,
-              initialData: 0,
-              builder: (context, snapshot) {
-                final waterConsumed = snapshot.data;
-                _animationController.animateTo(waterConsumed / totalWater);
-                return AnimatedBuilder(
-                  animation: _curvedAnimation,
-                  builder: (context, child) {
-                    return CustomPaint(
-                      foregroundPainter: CircleProgressPainter(
-                        completeColor: Colors.blue,
-                        lineColor: Colors.grey,
-                        completePercent: _curvedAnimation.value,
-                      ),
-                    );
-                  },
-                );
-              },
-            );
-          },
-        ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          ProgressCircle(
+            animationController: _animationController,
+            curvedAnimation: _curvedAnimation,
+          ),
+          DrinkGlassWithAmount(drinkBloc: drinkBloc)
+        ],
       ),
     );
   }
@@ -87,6 +61,91 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
   void dispose() {
     super.dispose();
     _animationController.dispose();
+  }
+}
+
+class DrinkGlassWithAmount extends StatelessWidget {
+  const DrinkGlassWithAmount({
+    Key key,
+    @required this.drinkBloc,
+  }) : super(key: key);
+
+  final DrinkBloc drinkBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<int>(
+      stream: drinkBloc.outSelectedAmount,
+      initialData: 1,
+      builder: (context, snapshot) {
+        final selectedAmount = snapshot.data;
+        return Column(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.only(bottom: 4),
+              height: 60,
+              width: 60,
+              child: Placeholder(),
+            ),
+            Text('Drink ${selectedAmount}ml'),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class ProgressCircle extends StatelessWidget {
+  const ProgressCircle({
+    Key key,
+    @required AnimationController animationController,
+    @required Animation curvedAnimation,
+  })  : _animationController = animationController,
+        _curvedAnimation = curvedAnimation,
+        super(key: key);
+
+  final AnimationController _animationController;
+  final Animation _curvedAnimation;
+
+  @override
+  Widget build(BuildContext context) {
+    final drinkBloc = Provider.of<DrinkBloc>(context);
+    final userbloc = Provider.of<UserBloc>(context);
+    return Container(
+      height: 150,
+      width: 150,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+      ),
+      child: StreamBuilder<int>(
+        stream: userbloc.outMaxWater,
+        initialData: 1,
+        builder: (context, snapshot) {
+          final totalWater = snapshot.data;
+          return StreamBuilder<int>(
+            stream: drinkBloc.outDrinksAmount,
+            initialData: 0,
+            builder: (context, snapshot) {
+              final waterConsumed = snapshot.data;
+              _animationController.animateTo(waterConsumed / totalWater);
+              return AnimatedBuilder(
+                animation: _curvedAnimation,
+                builder: (context, child) {
+                  return CustomPaint(
+                    foregroundPainter: CircleProgressPainter(
+                      completeColor: Colors.blue,
+                      lineColor: Colors.grey,
+                      completePercent: _curvedAnimation.value,
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }
 
