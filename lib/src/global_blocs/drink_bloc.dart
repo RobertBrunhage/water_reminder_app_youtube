@@ -31,6 +31,8 @@ class DrinkBloc implements BlocBase {
       _drinksToday = querySnapshot.documents.map((doc) => Drink.fromDb(doc.data, doc.documentID)).toList();
       _inDrinks(_drinksToday);
     });
+
+    _inSelectedAmount(_selectedDrinkAmount);
   }
 
   Future<void> drinkWater() async {
