@@ -81,12 +81,12 @@ class DrinkGlassWithAmount extends StatelessWidget {
         final selectedAmount = snapshot.data;
         return Column(
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.only(bottom: 4),
+            SizedBox(
               height: 60,
               width: 60,
               child: Placeholder(),
             ),
+            SizedBox(height: 4),
             Text('Drink ${selectedAmount}ml'),
           ],
         );
