@@ -21,18 +21,9 @@ class DrinkBloc implements BlocBase {
   Function(int) get _inSelectedAmount => _selectedDrinkAmountController.sink.add;
   Stream<int> get outSelectedAmount => _selectedDrinkAmountController.stream;
 
-  Stream<int> get outDrinksAmount => outDrinks.map((drinks) {
-        int totalValue = 0;
-        for (Drink drink in drinks) {
-          totalValue += drink.amount;
-        }
-        return totalValue;
-      });
-
-  /// Pull request of put in the comments of how I can transform this with functional code
-  /*Stream<int> get outDrinksAmount {
-    return outDrinks.map((drinks) => drinks.reduce((a, b) => a.amount + b.amount));
-  }*/
+  Stream<int> get outDrinksAmount {
+    return outDrinks.map((drinks) => drinks.fold<int>(0, (totalAmount, drink) => totalAmount + drink.amount));
+  }
 
   Future<void> init() async {
     final drinkStream = await FirestoreDrinkService.getDrinksStream(DateTime.now());
