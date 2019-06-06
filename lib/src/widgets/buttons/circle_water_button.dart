@@ -128,7 +128,8 @@ class ProgressCircle extends StatelessWidget {
             initialData: 0,
             builder: (context, snapshot) {
               final waterConsumed = snapshot.data;
-              _animationController.animateTo(waterConsumed / totalWater);
+              double percent = waterConsumed / totalWater;
+              _animationController.animateTo(percent);
               return AnimatedBuilder(
                 animation: _curvedAnimation,
                 builder: (context, child) {
