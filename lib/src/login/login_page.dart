@@ -8,29 +8,31 @@ class LoginPage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          SizedBox(height: 100, width: double.infinity),
-          appIcon(),
-          smallTextSpace,
-          title(textTheme),
-          smallTextSpace,
-          subTitle(textTheme),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                GoogleSignInButton(),
-                AnonymousSignInButton(),
-              ],
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 100, width: double.infinity),
+            appIcon(),
+            smallTextSpace,
+            title(textTheme),
+            smallTextSpace,
+            subTitle(textTheme),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  GoogleSignInButton(),
+                  AnonymousSignInButton(),
+                ],
+              ),
             ),
-          ),
-          Text(
-            'By creating an account, you are agreeing to our\nTerms of Service and Privacy Policy',
-            textAlign: TextAlign.center,
-          ),
-          smallTextSpace,
-        ],
+            Text(
+              'By creating an account, you are agreeing to our\nTerms of Service and Privacy Policy',
+              textAlign: TextAlign.center,
+            ),
+            smallTextSpace,
+          ],
+        ),
       ),
     );
   }
