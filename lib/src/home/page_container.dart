@@ -6,6 +6,7 @@ import 'package:water_reminder_app/src/global_blocs/auth/auth_bloc.dart';
 import 'package:water_reminder_app/src/home/pages/cups_page.dart';
 import 'package:water_reminder_app/src/home/pages/drink_page.dart';
 import 'package:water_reminder_app/src/home/pages/notifcation_page.dart';
+import 'package:water_reminder_app/src/widgets/popups/sync_account_popup.dart';
 
 class PageContainer extends StatefulWidget {
   const PageContainer({
@@ -26,10 +27,21 @@ class _PageContainerState extends State<PageContainer> {
     DrinkPage(),
     NotificationPage(),
   ];
+  AuthBloc authBloc;
+  bool isAnonymous = false;
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    authBloc = Provider.of<AuthBloc>(context);
+    final firebaseUser = await authBloc.currentUser();
+    setState(() {
+      isAnonymous = firebaseUser.isAnonymous;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = Provider.of<AuthBloc>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -44,6 +56,11 @@ class _PageContainerState extends State<PageContainer> {
                   value: PopupMenuChoices.signOut,
                   child: Text('sign out'),
                 ),
+                if (isAnonymous)
+                  const PopupMenuItem<PopupMenuChoices>(
+                    value: PopupMenuChoices.syncPopup,
+                    child: Text('sync account'),
+                  ),
               ];
             },
           ),
@@ -73,9 +90,25 @@ class _PageContainerState extends State<PageContainer> {
     );
   }
 
-  void onMenuSelection(PopupMenuChoices value, AuthBloc authBloc) {
-    if (value == PopupMenuChoices.signOut) {
-      authBloc.signOut();
+  void onMenuSelection(PopupMenuChoices value, AuthBloc authBloc) async {
+    switch (value) {
+      case PopupMenuChoices.signOut:
+        authBloc.signOut();
+        break;
+      case PopupMenuChoices.syncPopup:
+        await showDialog(
+          context: context,
+          barrierDismissible: true,
+          builder: (context) {
+            return SyncAccountPopup();
+          },
+        );
+        final firebaseUser = await authBloc.currentUser();
+        setState(() {
+          isAnonymous = firebaseUser.isAnonymous;
+        });
+        break;
+      default:
     }
   }
 }

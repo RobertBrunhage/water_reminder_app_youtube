@@ -6,4 +6,5 @@ abstract class BaseAuth {
   Future<String> signInWithGoogle();
   Future<String> syncWithGoogle();
   Future<void> signOut();
+  Future<FirebaseUser> currentUser();
 }

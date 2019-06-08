@@ -62,4 +62,9 @@ class AuthBloc implements BaseAuth {
     final user = await anonymousUser.linkWithCredential(credential);
     return user?.uid;
   }
+
+  @override
+  Future<FirebaseUser> currentUser() {
+    return _firebaseAuth.currentUser();
+  }
 }

@@ -1,1 +1,1 @@
-enum PopupMenuChoices { signOut }
+enum PopupMenuChoices { signOut, syncPopup }
