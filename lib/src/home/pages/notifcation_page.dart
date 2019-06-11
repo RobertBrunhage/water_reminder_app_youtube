@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:water_reminder_app/src/pages/create_notification_page.dart';
 import 'package:water_reminder_app/src/utils/notification_plugin.dart';
+import 'package:water_reminder_app/src/view_models/notification_data.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -40,18 +42,7 @@ class _NotificationPageState extends State<NotificationPage> {
           ),
           FlatButton(
             padding: EdgeInsets.all(0),
-            onPressed: () async {
-              await _notificationPlugin.showWeeklyAtDayAndTime(
-                Time(12, 0, 0),
-                Day.Monday,
-                0,
-                'first notification',
-                'description',
-              );
-              setState(() {
-                notificationFuture = _notificationPlugin.getScheduledNotifications();
-              });
-            },
+            onPressed: navigateToNotificationCreation,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(5),
@@ -76,5 +67,32 @@ class _NotificationPageState extends State<NotificationPage> {
         ],
       ),
     );
+  }
+
+  Future<void> navigateToNotificationCreation() async {
+    NotificationData notificationData = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CreateNotificationPage(),
+      ),
+    );
+    if (notificationData != null) {
+      final notificationList = await _notificationPlugin.getScheduledNotifications();
+      int id = 0;
+      for (var i = 0; i < 100; i++) {
+        bool exists = _notificationPlugin.checkIfIdExists(notificationList, i);
+        if (!exists) {
+          id = i;
+        }
+      }
+      await _notificationPlugin.showDailyAtTime(
+        notificationData.time,
+        id,
+        notificationData.title,
+        notificationData.description,
+      );
+      setState(() {
+        notificationFuture = _notificationPlugin.getScheduledNotifications();
+      });
+    }
   }
 }
