@@ -34,7 +34,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   itemCount: notifications.length,
                   itemBuilder: (context, index) {
                     final notification = notifications[index];
-                    return Text(notification.title);
+                    return NotificationTile(notification: notification);
                   },
                 ),
               );
@@ -94,5 +94,24 @@ class _NotificationPageState extends State<NotificationPage> {
         notificationFuture = _notificationPlugin.getScheduledNotifications();
       });
     }
+  }
+}
+
+class NotificationTile extends StatelessWidget {
+  const NotificationTile({
+    Key key,
+    @required this.notification,
+  }) : super(key: key);
+
+  final PendingNotificationRequest notification;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(notification.title),
+        subtitle: Text(notification.body),
+      ),
+    );
   }
 }
