@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:water_reminder_app/src/pages/create_notification_page.dart';
 import 'package:water_reminder_app/src/utils/notification_plugin.dart';
 import 'package:water_reminder_app/src/view_models/notification_data.dart';
+import 'package:water_reminder_app/src/widgets/buttons/custom_wide_flat_button.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -34,39 +35,35 @@ class _NotificationPageState extends State<NotificationPage> {
                   itemCount: notifications.length,
                   itemBuilder: (context, index) {
                     final notification = notifications[index];
-                    return NotificationTile(notification: notification);
+                    return NotificationTile(
+                      notification: notification,
+                      deleteNotification: dismissNotification,
+                    );
                   },
                 ),
               );
             },
           ),
-          FlatButton(
-            padding: EdgeInsets.all(0),
+          CustomWideFlatButton(
             onPressed: navigateToNotificationCreation,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
-              ),
-            ),
-            color: Colors.blue.shade300,
-            child: Container(
-              alignment: Alignment.center,
-              height: 50,
-              width: double.infinity,
-              child: Text(
-                'Create',
-                style: TextStyle(
-                  color: Colors.blue.shade900,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            backgroundColor: Colors.blue.shade300,
+            foregroundColor: Colors.blue.shade900,
+            isRoundedAtBottom: false,
           ),
         ],
       ),
     );
+  }
+
+  Future<void> dismissNotification(int id) async {
+    await _notificationPlugin.cancelNotification(id);
+    refreshNotification();
+  }
+
+  void refreshNotification() {
+    setState(() {
+      notificationFuture = _notificationPlugin.getScheduledNotifications();
+    });
   }
 
   Future<void> navigateToNotificationCreation() async {
@@ -90,9 +87,7 @@ class _NotificationPageState extends State<NotificationPage> {
         notificationData.title,
         notificationData.description,
       );
-      setState(() {
-        notificationFuture = _notificationPlugin.getScheduledNotifications();
-      });
+      refreshNotification();
     }
   }
 }
@@ -101,9 +96,11 @@ class NotificationTile extends StatelessWidget {
   const NotificationTile({
     Key key,
     @required this.notification,
+    @required this.deleteNotification,
   }) : super(key: key);
 
   final PendingNotificationRequest notification;
+  final Function(int id) deleteNotification;
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +108,10 @@ class NotificationTile extends StatelessWidget {
       child: ListTile(
         title: Text(notification.title),
         subtitle: Text(notification.body),
+        trailing: IconButton(
+          onPressed: () => deleteNotification(notification.id),
+          icon: Icon(Icons.delete),
+        ),
       ),
     );
   }

@@ -59,6 +59,7 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
             onPressed: createNotification,
             backgroundColor: Colors.blue.shade300,
             foregroundColor: Colors.blue.shade900,
+            isRoundedAtBottom: false,
           ),
         ],
       ),
