@@ -32,6 +32,7 @@ class _NotificationPageState extends State<NotificationPage> {
               final notifications = snapshot.data;
               return Expanded(
                 child: ListView.builder(
+                  padding: const EdgeInsets.all(12),
                   itemCount: notifications.length,
                   itemBuilder: (context, index) {
                     final notification = notifications[index];
@@ -106,8 +107,9 @@ class NotificationTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Card(
+      elevation: 6,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -117,9 +119,19 @@ class NotificationTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(notification.title, style: textTheme.title),
+                  Text(
+                    notification.title,
+                    style: textTheme.title.copyWith(
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
                   smallHeight,
-                  Text(notification.title, style: textTheme.subtitle),
+                  Text(
+                    notification.body,
+                    style: textTheme.subtitle.copyWith(
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
                   smallHeight,
                   Row(
                     children: <Widget>[
@@ -130,10 +142,10 @@ class NotificationTile extends StatelessWidget {
                       ),
                       SizedBox(width: 12),
                       Text(
-                        '13:32',
+                        '12:42',
                         style: textTheme.headline.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade600,
+                          color: Colors.grey.shade800,
                         ),
                       ),
                     ],
@@ -141,15 +153,10 @@ class NotificationTile extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              width: 60,
-              child: Center(
-                child: IconButton(
-                  onPressed: () => deleteNotification(notification.id),
-                  icon: Icon(Icons.delete, size: 32),
-                ),
-              ),
-            )
+            IconButton(
+              onPressed: () => deleteNotification(notification.id),
+              icon: Icon(Icons.delete, size: 32),
+            ),
           ],
         ),
       ),
