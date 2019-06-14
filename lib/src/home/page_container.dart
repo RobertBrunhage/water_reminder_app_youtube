@@ -68,6 +68,7 @@ class _PageContainerState extends State<PageContainer> {
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Theme.of(context).accentColor,
         onTap: (index) {
           setState(() => _currentIndex = index);
         },

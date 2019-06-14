@@ -28,7 +28,9 @@ class WaterReminderApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Water Reminder',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          brightness: Brightness.light,
+          primaryColor: Colors.white,
+          accentColor: Colors.blue,
         ),
         home: RootPage(),
       ),

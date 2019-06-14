@@ -36,12 +36,14 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
                     CustomInputField(
                       controller: _titleController,
                       hintText: 'Title',
+                      inputType: TextInputType.text,
                       autoFocus: true,
                     ),
                     SizedBox(height: 12),
                     CustomInputField(
                       controller: _descriptionController,
                       hintText: 'Description',
+                      inputType: TextInputType.text,
                       autoFocus: true,
                     ),
                     SizedBox(height: 12),
@@ -94,11 +96,13 @@ class CustomInputField extends StatelessWidget {
     Key key,
     @required this.controller,
     @required this.hintText,
+    @required this.inputType,
     this.autoFocus,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String hintText;
+  final TextInputType inputType;
   final bool autoFocus;
 
   @override

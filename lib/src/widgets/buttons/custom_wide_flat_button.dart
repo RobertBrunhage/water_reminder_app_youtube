@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class CustomWideFlatButton extends StatelessWidget {
   const CustomWideFlatButton({
     Key key,
+    this.text = 'Create',
     @required this.onPressed,
     @required this.backgroundColor,
     @required this.foregroundColor,
     this.isRoundedAtBottom = true,
   }) : super(key: key);
 
+  final String text;
   final VoidCallback onPressed;
   final Color backgroundColor;
   final Color foregroundColor;
@@ -27,15 +29,15 @@ class CustomWideFlatButton extends StatelessWidget {
       padding: EdgeInsets.all(0),
       onPressed: onPressed,
       shape: isRoundedAtBottom ? roundedBorder : null,
-      color: Colors.blue.shade300,
+      color: backgroundColor,
       child: Container(
         alignment: Alignment.center,
         height: 50,
         width: double.infinity,
         child: Text(
-          'Create',
+          text,
           style: TextStyle(
-            color: Colors.blue.shade900,
+            color: foregroundColor,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
