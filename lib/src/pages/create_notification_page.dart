@@ -110,7 +110,7 @@ class CustomInputField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       autofocus: autoFocus,
-      keyboardType: TextInputType.number,
+      keyboardType: inputType,
       validator: (value) {
         if (value.isEmpty) {
           return 'Field can not be empty';

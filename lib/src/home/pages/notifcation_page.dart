@@ -104,15 +104,57 @@ class NotificationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Card(
-      child: ListTile(
-        title: Text(notification.title),
-        subtitle: Text(notification.body),
-        trailing: IconButton(
-          onPressed: () => deleteNotification(notification.id),
-          icon: Icon(Icons.delete),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(notification.title, style: textTheme.title),
+                  smallHeight,
+                  Text(notification.title, style: textTheme.subtitle),
+                  smallHeight,
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.access_time,
+                        size: 28,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      SizedBox(width: 12),
+                      Text(
+                        '13:32',
+                        style: textTheme.headline.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: 60,
+              child: Center(
+                child: IconButton(
+                  onPressed: () => deleteNotification(notification.id),
+                  icon: Icon(Icons.delete, size: 32),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
   }
+
+  SizedBox get smallHeight => SizedBox(height: 8);
 }
