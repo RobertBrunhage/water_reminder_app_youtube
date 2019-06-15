@@ -23,6 +23,8 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        title: Text('Create Notification'),
+        centerTitle: true,
       ),
       body: Column(
         children: <Widget>[
@@ -33,6 +35,15 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Placeholder(),
+                        ),
+                      ),
+                    ),
                     CustomInputField(
                       controller: _titleController,
                       hintText: 'Title',
@@ -47,10 +58,17 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
                       autoFocus: true,
                     ),
                     SizedBox(height: 12),
-                    FlatButton(
+                    OutlineButton(
+                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                       onPressed: selectTime,
-                      color: Colors.blue,
-                      child: Text(selectedTime.format(context)),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.access_time),
+                          SizedBox(width: 4),
+                          Text(selectedTime.format(context)),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -73,10 +91,11 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
       context: context,
       initialTime: selectedTime,
     );
-
-    setState(() {
-      selectedTime = time;
-    });
+    if (time != null) {
+      setState(() {
+        selectedTime = time;
+      });
+    }
   }
 
   void createNotification() {

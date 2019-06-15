@@ -30,6 +30,16 @@ class _NotificationPageState extends State<NotificationPage> {
             initialData: [],
             builder: (context, snapshot) {
               final notifications = snapshot.data;
+              if (notifications.isEmpty)
+                return Expanded(
+                  child: Center(
+                    child: Container(
+                      height: 300,
+                      width: 300,
+                      child: Placeholder(),
+                    ),
+                  ),
+                );
               return Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.all(12),
