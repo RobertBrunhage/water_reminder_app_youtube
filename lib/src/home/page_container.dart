@@ -47,6 +47,8 @@ class _PageContainerState extends State<PageContainer> {
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        title: Text('Water Reminder'),
+        centerTitle: true,
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (value) => onMenuSelection(value, authBloc),
@@ -68,6 +70,7 @@ class _PageContainerState extends State<PageContainer> {
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Theme.of(context).accentColor,
         onTap: (index) {
           setState(() => _currentIndex = index);
         },

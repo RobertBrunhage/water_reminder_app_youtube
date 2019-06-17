@@ -12,6 +12,7 @@ class GoogleSignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ButtonTheme(
       minWidth: 224,
+      height: 48,
       child: FlatButton(
         onPressed: onPressed,
         child: Text('Google Sign in'),

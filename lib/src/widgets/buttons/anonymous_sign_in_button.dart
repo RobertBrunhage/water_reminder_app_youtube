@@ -12,9 +12,10 @@ class AnonymousSignInButton extends StatelessWidget {
     final authBloc = Provider.of<AuthBloc>(context);
     return ButtonTheme(
       minWidth: 224,
-      child: FlatButton(
+      height: 48,
+      child: RaisedButton(
         onPressed: authBloc.signInAnonymously,
-        color: Colors.green.shade800,
+        color: Colors.white,
         child: Text('Anonymous Sign in'),
       ),
     );

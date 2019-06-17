@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
+import 'package:water_reminder_app/src/widgets/buttons/custom_wide_flat_button.dart';
 
 class CustomAmountPopup extends StatefulWidget {
   @override
@@ -67,28 +68,13 @@ class _CustomAmountPopupState extends State<CustomAmountPopup> {
             ),
           ),
           largeSpace,
-          okButton(drinkBloc, context),
+          CustomWideFlatButton(
+            text: 'Ok',
+            onPressed: () => setValue(_controller.text, drinkBloc),
+            backgroundColor: Theme.of(context).accentColor,
+            foregroundColor: Colors.blue.shade900,
+          ),
         ],
-      ),
-    );
-  }
-
-  FlatButton okButton(DrinkBloc drinkBloc, BuildContext context) {
-    return FlatButton(
-      padding: const EdgeInsets.all(0),
-      onPressed: () => setValue(_controller.text, drinkBloc),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(5),
-          bottomRight: Radius.circular(5),
-        ),
-      ),
-      color: Theme.of(context).accentColor,
-      child: Container(
-        alignment: Alignment.center,
-        height: 50,
-        width: double.infinity,
-        child: Text('Ok'),
       ),
     );
   }
