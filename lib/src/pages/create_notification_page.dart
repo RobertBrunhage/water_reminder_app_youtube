@@ -40,7 +40,11 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
                         padding: const EdgeInsets.all(12.0),
                         child: AspectRatio(
                           aspectRatio: 1,
-                          child: Placeholder(),
+                          child: Image.asset(
+                            'assets/create_notification.png',
+                            width: 300,
+                            height: 300,
+                          ),
                         ),
                       ),
                     ),
