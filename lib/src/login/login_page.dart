@@ -44,11 +44,11 @@ class LoginPage extends StatelessWidget {
 
   Widget get smallTextSpace => SizedBox(height: 8);
 
-  SizedBox appIcon() {
-    return SizedBox(
-      height: 125,
+  Widget appIcon() {
+    return Image.asset(
+      'assets/sign_in_icon.png',
       width: 125,
-      child: Placeholder(),
+      height: 125,
     );
   }
 

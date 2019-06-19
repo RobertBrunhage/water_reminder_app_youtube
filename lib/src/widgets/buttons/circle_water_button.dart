@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/user_bloc.dart';
+import 'package:water_reminder_app/src/utils/asset_util.dart';
 
 class CircleButton extends StatefulWidget {
   const CircleButton({
@@ -81,10 +82,10 @@ class DrinkGlassWithAmount extends StatelessWidget {
         final selectedAmount = snapshot.data;
         return Column(
           children: <Widget>[
-            SizedBox(
-              height: 60,
-              width: 60,
-              child: Placeholder(),
+            Image.asset(
+              AssetUtil.assetImage(selectedAmount),
+              height: 50,
+              width: 50,
             ),
             SizedBox(height: 4),
             Text('Drink ${selectedAmount}ml'),

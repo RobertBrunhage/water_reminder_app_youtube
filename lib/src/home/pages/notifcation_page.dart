@@ -33,10 +33,10 @@ class _NotificationPageState extends State<NotificationPage> {
               if (notifications.isEmpty)
                 return Expanded(
                   child: Center(
-                    child: Container(
-                      height: 300,
+                    child: Image.asset(
+                      'assets/no_notification.png',
                       width: 300,
-                      child: Placeholder(),
+                      height: 300,
                     ),
                   ),
                 );
