@@ -10,14 +10,26 @@ class NotificationPage extends StatefulWidget {
   _NotificationPageState createState() => _NotificationPageState();
 }
 
-class _NotificationPageState extends State<NotificationPage> {
+class _NotificationPageState extends State<NotificationPage> with SingleTickerProviderStateMixin {
   final NotificationPlugin _notificationPlugin = NotificationPlugin();
   Future<List<PendingNotificationRequest>> notificationFuture;
+
+  AnimationController _fadeInController;
 
   @override
   void initState() {
     super.initState();
+    _fadeInController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
     notificationFuture = _notificationPlugin.getScheduledNotifications();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _fadeInController.dispose();
   }
 
   @override
@@ -27,32 +39,43 @@ class _NotificationPageState extends State<NotificationPage> {
         children: <Widget>[
           FutureBuilder<List<PendingNotificationRequest>>(
             future: notificationFuture,
-            initialData: [],
             builder: (context, snapshot) {
-              final notifications = snapshot.data;
-              if (notifications.isEmpty)
-                return Expanded(
-                  child: Center(
-                    child: Image.asset(
-                      'assets/no_notification.png',
-                      width: 300,
-                      height: 300,
+              if (snapshot.hasData) {
+                final notifications = snapshot.data;
+                _fadeInController.forward();
+                if (notifications.isEmpty)
+                  return Expanded(
+                    child: Center(
+                      child: Image.asset(
+                        'assets/no_notification.png',
+                        width: 300,
+                        height: 300,
+                      ),
                     ),
+                  );
+                return Expanded(
+                  child: AnimatedBuilder(
+                    animation: _fadeInController,
+                    builder: (context, child) {
+                      return Opacity(
+                        opacity: _fadeInController.value,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(12),
+                          itemCount: notifications.length,
+                          itemBuilder: (context, index) {
+                            final notification = notifications[index];
+                            return NotificationTile(
+                              notification: notification,
+                              deleteNotification: dismissNotification,
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 );
-              return Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(12),
-                  itemCount: notifications.length,
-                  itemBuilder: (context, index) {
-                    final notification = notifications[index];
-                    return NotificationTile(
-                      notification: notification,
-                      deleteNotification: dismissNotification,
-                    );
-                  },
-                ),
-              );
+              }
+              return Expanded(child: SizedBox());
             },
           ),
           CustomWideFlatButton(
