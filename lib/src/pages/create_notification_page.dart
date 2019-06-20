@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
+import 'package:water_reminder_app/src/global_blocs/notification_bloc.dart';
 import 'package:water_reminder_app/src/view_models/notification_data.dart';
 import 'package:water_reminder_app/src/widgets/buttons/custom_wide_flat_button.dart';
 
@@ -18,6 +19,7 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final notificationBloc = Provider.of<NotificationBloc>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -80,7 +82,7 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
             ),
           ),
           CustomWideFlatButton(
-            onPressed: createNotification,
+            onPressed: () => createNotification(notificationBloc),
             backgroundColor: Colors.blue.shade300,
             foregroundColor: Colors.blue.shade900,
             isRoundedAtBottom: false,
@@ -102,14 +104,14 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
     }
   }
 
-  void createNotification() {
+  void createNotification(NotificationBloc notificationBloc) {
     if (_formKey.currentState.validate()) {
       final title = _titleController.text;
       final description = _descriptionController.text;
-      final time = Time(selectedTime.hour, selectedTime.minute);
 
-      final notificationData = NotificationData(title, description, time);
-      Navigator.of(context).pop(notificationData);
+      final notificationData = NotificationData(title, description, selectedTime.hour, selectedTime.minute);
+      notificationBloc.addNotification(notificationData);
+      Navigator.of(context).pop();
     }
   }
 }

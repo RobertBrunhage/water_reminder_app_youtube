@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/src/global_blocs/auth/auth_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/notification_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/user_bloc.dart';
 import 'package:water_reminder_app/src/root_page.dart';
 
@@ -22,6 +23,10 @@ class WaterReminderApp extends StatelessWidget {
         Provider<DrinkBloc>(
           builder: (_) => DrinkBloc(),
           dispose: (_, drinkBloc) => drinkBloc.dispose(),
+        ),
+        Provider<NotificationBloc>(
+          builder: (_) => NotificationBloc(),
+          dispose: (_, notificationBloc) => notificationBloc.dispose(),
         ),
       ],
       child: MaterialApp(

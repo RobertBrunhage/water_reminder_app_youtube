@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:water_reminder_app/src/view_models/notification_data.dart';
 
 class NotificationPlugin {
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
@@ -73,16 +74,22 @@ class NotificationPlugin {
     return pendingNotifications;
   }
 
-  Future cancelNotification(int id) async {
+  Future<void> cancelNotification(int id) async {
     await _flutterLocalNotificationsPlugin.cancel(id);
   }
 
-  bool checkIfIdExists(List<PendingNotificationRequest> notifications, int id) {
+  Future<void> cancelAllNotifications() async {
+    await _flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  Future<void> scheduleAllNotifications(List<NotificationData> notifications) async {
     for (final notification in notifications) {
-      if (notification.id == id) {
-        return true;
-      }
+      await showDailyAtTime(
+        Time(notification.hour, notification.minute),
+        notification.notificationId,
+        notification.title,
+        notification.description,
+      );
     }
-    return false;
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
+import 'package:water_reminder_app/src/global_blocs/notification_bloc.dart';
 import 'package:water_reminder_app/src/pages/create_notification_page.dart';
 import 'package:water_reminder_app/src/utils/notification_plugin.dart';
 import 'package:water_reminder_app/src/view_models/notification_data.dart';
@@ -34,11 +36,12 @@ class _NotificationPageState extends State<NotificationPage> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    final notificationBloc = Provider.of<NotificationBloc>(context);
     return Center(
       child: Column(
         children: <Widget>[
-          FutureBuilder<List<PendingNotificationRequest>>(
-            future: notificationFuture,
+          StreamBuilder<List<NotificationData>>(
+            stream: notificationBloc.outNotifications,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final notifications = snapshot.data;
@@ -66,7 +69,6 @@ class _NotificationPageState extends State<NotificationPage> with SingleTickerPr
                             final notification = notifications[index];
                             return NotificationTile(
                               notification: notification,
-                              deleteNotification: dismissNotification,
                             );
                           },
                         ),
@@ -89,40 +91,12 @@ class _NotificationPageState extends State<NotificationPage> with SingleTickerPr
     );
   }
 
-  Future<void> dismissNotification(int id) async {
-    await _notificationPlugin.cancelNotification(id);
-    refreshNotification();
-  }
-
-  void refreshNotification() {
-    setState(() {
-      notificationFuture = _notificationPlugin.getScheduledNotifications();
-    });
-  }
-
   Future<void> navigateToNotificationCreation() async {
-    NotificationData notificationData = await Navigator.of(context).push(
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => CreateNotificationPage(),
       ),
     );
-    if (notificationData != null) {
-      final notificationList = await _notificationPlugin.getScheduledNotifications();
-      int id = 0;
-      for (var i = 0; i < 100; i++) {
-        bool exists = _notificationPlugin.checkIfIdExists(notificationList, i);
-        if (!exists) {
-          id = i;
-        }
-      }
-      await _notificationPlugin.showDailyAtTime(
-        notificationData.time,
-        id,
-        notificationData.title,
-        notificationData.description,
-      );
-      refreshNotification();
-    }
   }
 }
 
@@ -130,14 +104,13 @@ class NotificationTile extends StatelessWidget {
   const NotificationTile({
     Key key,
     @required this.notification,
-    @required this.deleteNotification,
   }) : super(key: key);
 
-  final PendingNotificationRequest notification;
-  final Function(int id) deleteNotification;
+  final NotificationData notification;
 
   @override
   Widget build(BuildContext context) {
+    final notificationBloc = Provider.of<NotificationBloc>(context);
     final textTheme = Theme.of(context).textTheme;
     return Card(
       elevation: 6,
@@ -160,7 +133,7 @@ class NotificationTile extends StatelessWidget {
                   ),
                   smallHeight,
                   Text(
-                    notification.body,
+                    notification.description,
                     style: textTheme.subtitle.copyWith(
                       fontWeight: FontWeight.normal,
                     ),
@@ -175,7 +148,7 @@ class NotificationTile extends StatelessWidget {
                       ),
                       SizedBox(width: 12),
                       Text(
-                        '12:42',
+                        '${notification.hour.toString().padLeft(2, '0')}:${notification.minute.toString().padLeft(2, '0')}',
                         style: textTheme.headline.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey.shade800,
@@ -187,7 +160,7 @@ class NotificationTile extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () => deleteNotification(notification.id),
+              onPressed: () => notificationBloc.removeNotification(notification),
               icon: Icon(Icons.delete, size: 32),
             ),
           ],
