@@ -15,9 +15,11 @@ class CircleButton extends StatefulWidget {
   _CircleButtonState createState() => _CircleButtonState();
 }
 
-class _CircleButtonState extends State<CircleButton> with SingleTickerProviderStateMixin {
+class _CircleButtonState extends State<CircleButton> with TickerProviderStateMixin {
   AnimationController _animationController;
   Animation _curvedAnimation;
+
+  AnimationController _fadeInController;
 
   @override
   void initState() {
@@ -25,6 +27,10 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 800),
+    );
+    _fadeInController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
     );
 
     _curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeOut);
@@ -52,7 +58,9 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
             animationController: _animationController,
             curvedAnimation: _curvedAnimation,
           ),
-          DrinkGlassWithAmount(drinkBloc: drinkBloc)
+          DrinkGlassWithAmount(
+            fadeInController: _fadeInController,
+          )
         ],
       ),
     );
@@ -62,35 +70,48 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
   void dispose() {
     super.dispose();
     _animationController.dispose();
+    _fadeInController.dispose();
   }
 }
 
 class DrinkGlassWithAmount extends StatelessWidget {
   const DrinkGlassWithAmount({
     Key key,
-    @required this.drinkBloc,
+    @required this.fadeInController,
   }) : super(key: key);
 
-  final DrinkBloc drinkBloc;
+  final AnimationController fadeInController;
 
   @override
   Widget build(BuildContext context) {
+    final drinkBloc = Provider.of<DrinkBloc>(context);
     return StreamBuilder<int>(
       stream: drinkBloc.outSelectedAmount,
-      initialData: 1,
       builder: (context, snapshot) {
-        final selectedAmount = snapshot.data;
-        return Column(
-          children: <Widget>[
-            Image.asset(
-              AssetUtil.assetImage(selectedAmount),
-              height: 50,
-              width: 50,
-            ),
-            SizedBox(height: 4),
-            Text('Drink ${selectedAmount}ml'),
-          ],
-        );
+        if (snapshot.hasData) {
+          final selectedAmount = snapshot.data;
+          fadeInController.forward();
+          return AnimatedBuilder(
+            animation: fadeInController,
+            builder: (context, child) {
+              return Opacity(
+                opacity: fadeInController.value,
+                child: Column(
+                  children: <Widget>[
+                    Image.asset(
+                      AssetUtil.assetImage(selectedAmount),
+                      height: 50,
+                      width: 50,
+                    ),
+                    SizedBox(height: 4),
+                    Text('Drink ${selectedAmount}ml'),
+                  ],
+                ),
+              );
+            },
+          );
+        }
+        return SizedBox();
       },
     );
   }
