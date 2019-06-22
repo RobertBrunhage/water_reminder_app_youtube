@@ -15,7 +15,7 @@ class AnonymousSignInButton extends StatelessWidget {
       height: 48,
       child: RaisedButton(
         onPressed: authBloc.signInAnonymously,
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         child: Text('Anonymous Sign in'),
       ),
     );

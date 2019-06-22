@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:water_reminder_app/models/user.dart';
 import 'package:water_reminder_app/src/enums/enums.dart';
 import 'package:water_reminder_app/src/global_blocs/auth/auth_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/theme_provider.dart';
 import 'package:water_reminder_app/src/home/pages/cups_page.dart';
 import 'package:water_reminder_app/src/home/pages/drink_page.dart';
 import 'package:water_reminder_app/src/home/pages/notifcation_page.dart';
@@ -42,12 +43,15 @@ class _PageContainerState extends State<PageContainer> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChanger = Provider.of<ThemeChanger>(context);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Water Reminder'),
+        title: Text(
+          'Water Reminder',
+          style: Theme.of(context).textTheme.title,
+        ),
         centerTitle: true,
         actions: <Widget>[
           PopupMenuButton(
@@ -57,6 +61,12 @@ class _PageContainerState extends State<PageContainer> {
                 const PopupMenuItem<PopupMenuChoices>(
                   value: PopupMenuChoices.signOut,
                   child: Text('sign out'),
+                ),
+                PopupMenuItem<PopupMenuChoices>(
+                  value: PopupMenuChoices.themeChanger,
+                  child: Text(
+                    themeChanger.getTheme().brightness == Brightness.dark ? 'light mode' : 'dark mode',
+                  ),
                 ),
                 if (isAnonymous)
                   const PopupMenuItem<PopupMenuChoices>(
@@ -94,9 +104,13 @@ class _PageContainerState extends State<PageContainer> {
   }
 
   void onMenuSelection(PopupMenuChoices value, AuthBloc authBloc) async {
+    final themeChanger = Provider.of<ThemeChanger>(context);
     switch (value) {
       case PopupMenuChoices.signOut:
         authBloc.signOut();
+        break;
+      case PopupMenuChoices.themeChanger:
+        themeChanger.switchTheme();
         break;
       case PopupMenuChoices.syncPopup:
         await showDialog(

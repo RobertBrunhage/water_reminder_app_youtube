@@ -151,7 +151,7 @@ class NotificationTile extends StatelessWidget {
                         '${notification.hour.toString().padLeft(2, '0')}:${notification.minute.toString().padLeft(2, '0')}',
                         style: textTheme.headline.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade800,
+                          color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade300 : Colors.grey.shade800,
                         ),
                       ),
                     ],

@@ -22,10 +22,12 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
     final notificationBloc = Provider.of<NotificationBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Create Notification'),
+        title: Text(
+          'Create Notification',
+          style: Theme.of(context).textTheme.title,
+        ),
         centerTitle: true,
       ),
       body: Column(
@@ -144,7 +146,7 @@ class CustomInputField extends StatelessWidget {
       },
       decoration: InputDecoration(
         hintText: hintText,
-        fillColor: Colors.grey.shade300,
+        fillColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade900 : Colors.grey.shade300,
         filled: true,
         border: OutlineInputBorder(
           borderSide: BorderSide.none,

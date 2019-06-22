@@ -137,7 +137,7 @@ class ProgressCircle extends StatelessWidget {
       height: 150,
       width: 150,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         shape: BoxShape.circle,
       ),
       child: StreamBuilder<int>(
