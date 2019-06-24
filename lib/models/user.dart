@@ -9,7 +9,7 @@ class User {
 
   User.temp() {
     this.lastLoggedIn = DateTime.now();
-    this.maxWaterPerDay = 2500;
+    this.maxWaterPerDay = 1;
   }
 
   User.fromDb(Map<String, dynamic> json) {

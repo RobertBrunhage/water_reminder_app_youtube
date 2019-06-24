@@ -7,6 +7,7 @@ import 'package:water_reminder_app/src/global_blocs/theme_provider.dart';
 import 'package:water_reminder_app/src/home/pages/cups_page.dart';
 import 'package:water_reminder_app/src/home/pages/drink_page.dart';
 import 'package:water_reminder_app/src/home/pages/notifcation_page.dart';
+import 'package:water_reminder_app/src/pages/onboarding_page.dart';
 import 'package:water_reminder_app/src/widgets/popups/sync_account_popup.dart';
 
 class PageContainer extends StatefulWidget {
@@ -30,6 +31,25 @@ class _PageContainerState extends State<PageContainer> {
   ];
   AuthBloc authBloc;
   bool isAnonymous = false;
+
+  @override
+  void initState() {
+    super.initState();
+    delayedInit();
+  }
+
+  Future<void> delayedInit() async {
+    await Future.delayed(Duration.zero, () {
+      if (widget.user.maxWaterPerDay == 1) {
+        // Replace screen with onboarding page
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => OnboardingPage(),
+          ),
+        );
+      }
+    });
+  }
 
   @override
   void didChangeDependencies() async {
