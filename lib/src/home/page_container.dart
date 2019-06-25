@@ -38,17 +38,25 @@ class _PageContainerState extends State<PageContainer> {
     delayedInit();
   }
 
+  @override
+  void didUpdateWidget(PageContainer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.user.maxWaterPerDay != widget.user.maxWaterPerDay) {
+      delayedInit();
+    }
+  }
+
   Future<void> delayedInit() async {
-    await Future.delayed(Duration.zero, () {
-      if (widget.user.maxWaterPerDay == 1) {
-        // Replace screen with onboarding page
+    if (widget.user.maxWaterPerDay == 1) {
+      // Replace screen with onboarding page
+      await Future.delayed(Duration.zero, () {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => OnboardingPage(),
           ),
         );
-      }
-    });
+      });
+    }
   }
 
   @override
