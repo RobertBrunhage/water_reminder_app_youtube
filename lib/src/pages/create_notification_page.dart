@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:water_reminder_app/models/notification_data.dart';
 import 'package:water_reminder_app/src/global_blocs/notification_bloc.dart';
-import 'package:water_reminder_app/src/view_models/notification_data.dart';
 import 'package:water_reminder_app/src/widgets/buttons/custom_wide_flat_button.dart';
+import 'package:water_reminder_app/src/widgets/custom_input_field.dart';
 
 class CreateNotificationPage extends StatefulWidget {
   @override
@@ -115,46 +116,5 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
       notificationBloc.addNotification(notificationData);
       Navigator.of(context).pop();
     }
-  }
-}
-
-class CustomInputField extends StatelessWidget {
-  const CustomInputField({
-    Key key,
-    @required this.controller,
-    @required this.hintText,
-    @required this.inputType,
-    this.autoFocus,
-  }) : super(key: key);
-
-  final TextEditingController controller;
-  final String hintText;
-  final TextInputType inputType;
-  final bool autoFocus;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      autofocus: autoFocus,
-      keyboardType: inputType,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Field can not be empty';
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: hintText,
-        fillColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade900 : Colors.grey.shade300,
-        filled: true,
-        border: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: const BorderRadius.all(
-            const Radius.circular(5),
-          ),
-        ),
-      ),
-    );
   }
 }

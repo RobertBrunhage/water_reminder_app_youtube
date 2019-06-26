@@ -1,5 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:water_reminder_app/src/view_models/notification_data.dart';
+import 'package:water_reminder_app/models/notification_data.dart';
 
 class NotificationPlugin {
   FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;

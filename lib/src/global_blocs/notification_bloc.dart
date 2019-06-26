@@ -1,8 +1,8 @@
 import 'package:rxdart/rxdart.dart';
+import 'package:water_reminder_app/models/notification_data.dart';
+import 'package:water_reminder_app/plugins/notification_plugin.dart';
 import 'package:water_reminder_app/services/firestore/firestore_notification_service.dart';
 import 'package:water_reminder_app/src/global_blocs/bloc_base.dart';
-import 'package:water_reminder_app/src/utils/notification_plugin.dart';
-import 'package:water_reminder_app/src/view_models/notification_data.dart';
 
 class NotificationBloc implements BlocBase {
   List<NotificationData> _notifications = List();

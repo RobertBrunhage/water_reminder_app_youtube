@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:water_reminder_app/models/notification_data.dart';
 import 'package:water_reminder_app/services/firestore/firestore_constants.dart';
-import 'package:water_reminder_app/src/view_models/notification_data.dart';
 
 class FirestoreNotificationService {
   static Future<Stream<QuerySnapshot>> getAllNotifications() async {

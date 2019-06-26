@@ -37,7 +37,7 @@ class ThemeChanger with ChangeNotifier {
     notifyListeners();
   }
 
-  ThemeData getTheme() => _themeData;
+  ThemeData get theme => _themeData;
 
   void switchTheme() {
     if (_themeData == _lightTheme) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:water_reminder_app/models/notification_data.dart';
+import 'package:water_reminder_app/plugins/notification_plugin.dart';
 import 'package:water_reminder_app/src/global_blocs/notification_bloc.dart';
 import 'package:water_reminder_app/src/pages/create_notification_page.dart';
-import 'package:water_reminder_app/src/utils/notification_plugin.dart';
-import 'package:water_reminder_app/src/view_models/notification_data.dart';
 import 'package:water_reminder_app/src/widgets/buttons/custom_wide_flat_button.dart';
 
 class NotificationPage extends StatefulWidget {

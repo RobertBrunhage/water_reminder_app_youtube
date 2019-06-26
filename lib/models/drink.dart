@@ -24,6 +24,11 @@ class Drink {
     };
   }
 
+  @override
+  String toString() {
+    return 'amount: $amount, date: $date';
+  }
+
   String id;
   int amount;
   DateTime date;

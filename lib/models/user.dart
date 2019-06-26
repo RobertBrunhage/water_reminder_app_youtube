@@ -26,4 +26,9 @@ class User {
 
   DateTime lastLoggedIn;
   int maxWaterPerDay;
+
+  @override
+  String toString() {
+    return 'lastLoggedIn: $lastLoggedIn, maxWaterPerDay: $maxWaterPerDay';
+  }
 }

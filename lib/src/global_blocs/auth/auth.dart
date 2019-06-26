@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:water_reminder_app/src/global_blocs/auth/base_auth.dart';
 
-class AuthBloc implements BaseAuth {
+class Auth implements BaseAuth {
   final _firebaseAuth = FirebaseAuth.instance;
 
   GoogleSignIn _googleSignIn = GoogleSignIn(

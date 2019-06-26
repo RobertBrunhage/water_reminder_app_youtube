@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/models/user.dart';
 import 'package:water_reminder_app/src/enums/enums.dart';
-import 'package:water_reminder_app/src/global_blocs/auth/auth_bloc.dart';
-import 'package:water_reminder_app/src/global_blocs/theme_provider.dart';
+import 'package:water_reminder_app/src/global_blocs/auth/auth.dart';
+import 'package:water_reminder_app/src/global_blocs/theme_changer.dart';
 import 'package:water_reminder_app/src/home/pages/cups_page.dart';
 import 'package:water_reminder_app/src/home/pages/drink_page.dart';
 import 'package:water_reminder_app/src/home/pages/notifcation_page.dart';
@@ -29,7 +29,7 @@ class _PageContainerState extends State<PageContainer> {
     DrinkPage(),
     NotificationPage(),
   ];
-  AuthBloc authBloc;
+  Auth auth;
   bool isAnonymous = false;
 
   @override
@@ -62,8 +62,8 @@ class _PageContainerState extends State<PageContainer> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    authBloc = Provider.of<AuthBloc>(context);
-    final firebaseUser = await authBloc.currentUser();
+    auth = Provider.of<Auth>(context);
+    final firebaseUser = await auth.currentUser();
     setState(() {
       isAnonymous = firebaseUser.isAnonymous;
     });
@@ -83,7 +83,7 @@ class _PageContainerState extends State<PageContainer> {
         centerTitle: true,
         actions: <Widget>[
           PopupMenuButton(
-            onSelected: (value) => onMenuSelection(value, authBloc),
+            onSelected: (value) => onMenuSelection(value, auth),
             itemBuilder: (context) {
               return [
                 const PopupMenuItem<PopupMenuChoices>(
@@ -93,7 +93,7 @@ class _PageContainerState extends State<PageContainer> {
                 PopupMenuItem<PopupMenuChoices>(
                   value: PopupMenuChoices.themeChanger,
                   child: Text(
-                    themeChanger.getTheme().brightness == Brightness.dark ? 'light mode' : 'dark mode',
+                    themeChanger.theme.brightness == Brightness.dark ? 'light mode' : 'dark mode',
                   ),
                 ),
                 if (isAnonymous)
@@ -131,11 +131,11 @@ class _PageContainerState extends State<PageContainer> {
     );
   }
 
-  void onMenuSelection(PopupMenuChoices value, AuthBloc authBloc) async {
+  void onMenuSelection(PopupMenuChoices value, Auth auth) async {
     final themeChanger = Provider.of<ThemeChanger>(context);
     switch (value) {
       case PopupMenuChoices.signOut:
-        authBloc.signOut();
+        auth.signOut();
         break;
       case PopupMenuChoices.themeChanger:
         themeChanger.switchTheme();
@@ -148,7 +148,7 @@ class _PageContainerState extends State<PageContainer> {
             return SyncAccountPopup();
           },
         );
-        final firebaseUser = await authBloc.currentUser();
+        final firebaseUser = await auth.currentUser();
         setState(() {
           isAnonymous = firebaseUser.isAnonymous;
         });

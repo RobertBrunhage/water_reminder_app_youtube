@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:water_reminder_app/src/global_blocs/auth/auth_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/auth/auth.dart';
 import 'package:water_reminder_app/src/widgets/buttons/anonymous_sign_in_button.dart';
 import 'package:water_reminder_app/src/widgets/buttons/google_sign_in_button.dart';
 
@@ -8,7 +8,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final authBloc = Provider.of<AuthBloc>(context);
+    final auth = Provider.of<Auth>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -25,7 +25,7 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   GoogleSignInButton(
-                    onPressed: authBloc.signInWithGoogle,
+                    onPressed: auth.signInWithGoogle,
                   ),
                   AnonymousSignInButton(),
                 ],

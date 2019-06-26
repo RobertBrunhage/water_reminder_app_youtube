@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:water_reminder_app/src/global_blocs/auth/auth_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/auth/auth.dart';
 import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/notification_bloc.dart';
-import 'package:water_reminder_app/src/global_blocs/theme_provider.dart';
+import 'package:water_reminder_app/src/global_blocs/theme_changer.dart';
 import 'package:water_reminder_app/src/global_blocs/user_bloc.dart';
 import 'package:water_reminder_app/src/root_page.dart';
 
@@ -26,8 +26,8 @@ class WaterReminderApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<AuthBloc>(
-          builder: (_) => AuthBloc(),
+        Provider<Auth>(
+          builder: (_) => Auth(),
         ),
         Provider<UserBloc>(
           builder: (_) => UserBloc(),
@@ -61,7 +61,7 @@ class MaterialAppWithTheme extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Water Reminder',
-      theme: themeChanger.getTheme(),
+      theme: themeChanger.theme,
       home: RootPage(),
     );
   }

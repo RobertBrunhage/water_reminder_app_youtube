@@ -33,4 +33,9 @@ class NotificationData {
       minuteField: this.minute,
     };
   }
+
+  @override
+  String toString() {
+    return 'title: $title, notificationId: $notificationId, hour: $hour, minute: $minute';
+  }
 }

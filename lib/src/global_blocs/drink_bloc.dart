@@ -6,9 +6,6 @@ import 'package:water_reminder_app/services/firestore/firestore_drink_service.da
 import 'package:water_reminder_app/src/global_blocs/bloc_base.dart';
 
 class DrinkBloc implements BlocBase {
-  // Should contain a list of drink objects
-  // Stream that out the the UI
-
   StreamSubscription _drinkStreamSubscription;
   List<Drink> _drinksToday = List();
   int _selectedDrinkAmount = 200;

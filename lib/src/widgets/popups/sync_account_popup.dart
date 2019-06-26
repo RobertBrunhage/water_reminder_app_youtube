@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:water_reminder_app/src/global_blocs/auth/auth_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/auth/auth.dart';
 import 'package:water_reminder_app/src/widgets/buttons/google_sign_in_button.dart';
 
 class SyncAccountPopup extends StatefulWidget {
@@ -14,7 +14,7 @@ class _SyncAccountPopupState extends State<SyncAccountPopup> {
 
   @override
   Widget build(BuildContext context) {
-    final authBloc = Provider.of<AuthBloc>(context);
+    final auth = Provider.of<Auth>(context);
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       child: Column(
@@ -46,7 +46,7 @@ class _SyncAccountPopupState extends State<SyncAccountPopup> {
                   ),
                 SizedBox(height: 24),
                 GoogleSignInButton(
-                  onPressed: () => syncWithGoogle(authBloc),
+                  onPressed: () => syncWithGoogle(auth),
                 ),
                 SizedBox(height: 14),
               ],
@@ -100,9 +100,9 @@ class _SyncAccountPopupState extends State<SyncAccountPopup> {
     );
   }
 
-  void syncWithGoogle(AuthBloc authBloc) async {
+  void syncWithGoogle(Auth auth) async {
     try {
-      await authBloc.syncWithGoogle();
+      await auth.syncWithGoogle();
       Navigator.of(context).pop();
     } catch (e) {
       setState(() {
