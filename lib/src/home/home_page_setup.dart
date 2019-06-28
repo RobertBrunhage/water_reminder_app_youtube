@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/models/user.dart';
-import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
-import 'package:water_reminder_app/src/global_blocs/notification_bloc.dart';
-import 'package:water_reminder_app/src/global_blocs/user_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/app_bloc.dart';
 import 'package:water_reminder_app/src/home/page_container.dart';
 
 class HomePageSetup extends StatefulWidget {
@@ -17,18 +15,14 @@ class _HomePageSetupState extends State<HomePageSetup> {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
-      final userBloc = Provider.of<UserBloc>(context);
-      final drinkBloc = Provider.of<DrinkBloc>(context);
-      final notificationBloc = Provider.of<NotificationBloc>(context);
-      await userBloc.init();
-      await drinkBloc.init();
-      await notificationBloc.init();
+      final appBloc = Provider.of<AppBloc>(context);
+      await appBloc.init();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final userBloc = Provider.of<UserBloc>(context);
+    final userBloc = Provider.of<AppBloc>(context).userBloc;
     return StreamBuilder<User>(
       stream: userBloc.outUser,
       builder: (context, snapshot) {

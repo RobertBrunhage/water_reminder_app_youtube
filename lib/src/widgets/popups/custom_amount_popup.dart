@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:water_reminder_app/src/global_blocs/app_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
 import 'package:water_reminder_app/src/widgets/buttons/custom_wide_flat_button.dart';
 
@@ -14,7 +15,7 @@ class _CustomAmountPopupState extends State<CustomAmountPopup> {
 
   @override
   Widget build(BuildContext context) {
-    final drinkBloc = Provider.of<DrinkBloc>(context);
+    final drinkBloc = Provider.of<AppBloc>(context).drinkBloc;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       child: Column(

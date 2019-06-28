@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:water_reminder_app/src/global_blocs/app_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
 import 'package:water_reminder_app/src/utils/asset_util.dart';
 import 'package:water_reminder_app/src/widgets/popups/custom_amount_popup.dart';
@@ -14,7 +15,7 @@ class CupAmountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final drinkBloc = Provider.of<DrinkBloc>(context);
+    final drinkBloc = Provider.of<AppBloc>(context).drinkBloc;
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

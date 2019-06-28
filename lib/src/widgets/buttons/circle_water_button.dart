@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
-import 'package:water_reminder_app/src/global_blocs/user_bloc.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:water_reminder_app/src/global_blocs/app_bloc.dart';
 import 'package:water_reminder_app/src/utils/asset_util.dart';
 
 class CircleButton extends StatefulWidget {
@@ -17,7 +17,6 @@ class CircleButton extends StatefulWidget {
 
 class _CircleButtonState extends State<CircleButton> with TickerProviderStateMixin {
   AnimationController _animationController;
-  Animation _curvedAnimation;
 
   AnimationController _fadeInController;
 
@@ -32,13 +31,11 @@ class _CircleButtonState extends State<CircleButton> with TickerProviderStateMix
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-
-    _curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeOut);
   }
 
   @override
   Widget build(BuildContext context) {
-    final drinkBloc = Provider.of<DrinkBloc>(context);
+    final drinkBloc = Provider.of<AppBloc>(context).drinkBloc;
 
     return MaterialButton(
       onPressed: () => drinkBloc.drinkWater(),
@@ -56,7 +53,6 @@ class _CircleButtonState extends State<CircleButton> with TickerProviderStateMix
         children: <Widget>[
           ProgressCircle(
             animationController: _animationController,
-            curvedAnimation: _curvedAnimation,
           ),
           DrinkGlassWithAmount(
             fadeInController: _fadeInController,
@@ -84,7 +80,7 @@ class DrinkGlassWithAmount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final drinkBloc = Provider.of<DrinkBloc>(context);
+    final drinkBloc = Provider.of<AppBloc>(context).drinkBloc;
     return StreamBuilder<int>(
       stream: drinkBloc.outSelectedAmount,
       builder: (context, snapshot) {
@@ -121,18 +117,22 @@ class ProgressCircle extends StatelessWidget {
   const ProgressCircle({
     Key key,
     @required AnimationController animationController,
-    @required Animation curvedAnimation,
   })  : _animationController = animationController,
-        _curvedAnimation = curvedAnimation,
         super(key: key);
 
   final AnimationController _animationController;
-  final Animation _curvedAnimation;
 
   @override
   Widget build(BuildContext context) {
-    final drinkBloc = Provider.of<DrinkBloc>(context);
-    final userbloc = Provider.of<UserBloc>(context);
+    final drinkBloc = Provider.of<AppBloc>(context).drinkBloc;
+    final userbloc = Provider.of<AppBloc>(context).userBloc;
+    final observable = Observable.combineLatest2<int, int, double>(userbloc.outMaxWater, drinkBloc.outDrinksAmount, (
+      maxWater,
+      consumedWater,
+    ) {
+      return consumedWater / maxWater;
+    });
+
     return Container(
       height: 150,
       width: 150,
@@ -140,29 +140,20 @@ class ProgressCircle extends StatelessWidget {
         color: Theme.of(context).cardColor,
         shape: BoxShape.circle,
       ),
-      child: StreamBuilder<int>(
-        stream: userbloc.outMaxWater,
-        initialData: 1,
+      child: StreamBuilder<double>(
+        stream: observable,
+        initialData: 0,
         builder: (context, snapshot) {
-          final totalWater = snapshot.data;
-          return StreamBuilder<int>(
-            stream: drinkBloc.outDrinksAmount,
-            initialData: 0,
-            builder: (context, snapshot) {
-              final waterConsumed = snapshot.data;
-              double percent = waterConsumed / totalWater;
-              _animationController.animateTo(percent);
-              return AnimatedBuilder(
-                animation: _curvedAnimation,
-                builder: (context, child) {
-                  return CustomPaint(
-                    foregroundPainter: CircleProgressPainter(
-                      completeColor: Colors.blue,
-                      lineColor: Colors.grey,
-                      completePercent: _curvedAnimation.value,
-                    ),
-                  );
-                },
+          _animationController.animateTo(snapshot.data);
+          return AnimatedBuilder(
+            animation: _animationController,
+            builder: (context, child) {
+              return CustomPaint(
+                foregroundPainter: CircleProgressPainter(
+                  completeColor: Colors.blue,
+                  lineColor: Colors.grey,
+                  completePercent: _animationController.value,
+                ),
               );
             },
           );

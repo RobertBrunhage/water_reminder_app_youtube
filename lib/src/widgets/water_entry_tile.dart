@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/models/drink.dart';
-import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/app_bloc.dart';
 
 class WaterEntryTile extends StatelessWidget {
   const WaterEntryTile({
@@ -13,7 +13,7 @@ class WaterEntryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final drinkBloc = Provider.of<DrinkBloc>(context);
+    final drinkBloc = Provider.of<AppBloc>(context).drinkBloc;
     return Dismissible(
       key: UniqueKey(),
       background: Container(

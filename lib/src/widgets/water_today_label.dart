@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:water_reminder_app/src/global_blocs/drink_bloc.dart';
-import 'package:water_reminder_app/src/global_blocs/user_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/app_bloc.dart';
 
 class WaterTodayLabel extends StatefulWidget {
   const WaterTodayLabel({
@@ -32,8 +31,8 @@ class _WaterTodayLabelState extends State<WaterTodayLabel> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    final userBloc = Provider.of<UserBloc>(context);
-    final drinkBloc = Provider.of<DrinkBloc>(context);
+    final userBloc = Provider.of<AppBloc>(context).userBloc;
+    final drinkBloc = Provider.of<AppBloc>(context).drinkBloc;
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: StreamBuilder<int>(

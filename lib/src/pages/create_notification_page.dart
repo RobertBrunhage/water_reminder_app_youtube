@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/models/notification_data.dart';
+import 'package:water_reminder_app/src/global_blocs/app_bloc.dart';
 import 'package:water_reminder_app/src/global_blocs/notification_bloc.dart';
 import 'package:water_reminder_app/src/widgets/buttons/custom_wide_flat_button.dart';
 import 'package:water_reminder_app/src/widgets/custom_input_field.dart';
@@ -20,7 +21,7 @@ class _CreateNotificationPageState extends State<CreateNotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final notificationBloc = Provider.of<NotificationBloc>(context);
+    final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

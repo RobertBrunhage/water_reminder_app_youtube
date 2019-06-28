@@ -3,7 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:water_reminder_app/models/notification_data.dart';
 import 'package:water_reminder_app/plugins/notification_plugin.dart';
-import 'package:water_reminder_app/src/global_blocs/notification_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/app_bloc.dart';
 import 'package:water_reminder_app/src/pages/create_notification_page.dart';
 import 'package:water_reminder_app/src/widgets/buttons/custom_wide_flat_button.dart';
 
@@ -36,7 +36,7 @@ class _NotificationPageState extends State<NotificationPage> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    final notificationBloc = Provider.of<NotificationBloc>(context);
+    final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
     return Center(
       child: Column(
         children: <Widget>[
@@ -110,7 +110,7 @@ class NotificationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notificationBloc = Provider.of<NotificationBloc>(context);
+    final notificationBloc = Provider.of<AppBloc>(context).notificationBloc;
     final textTheme = Theme.of(context).textTheme;
     return Card(
       elevation: 6,
