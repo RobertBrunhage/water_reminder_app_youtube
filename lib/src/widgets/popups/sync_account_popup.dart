@@ -30,7 +30,6 @@ class _SyncAccountPopupState extends State<SyncAccountPopup> {
                   style: Theme.of(context).textTheme.title.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
-                        color: Colors.black,
                       ),
                 ),
                 SizedBox(height: 12),
@@ -40,9 +39,7 @@ class _SyncAccountPopupState extends State<SyncAccountPopup> {
                   Text(
                     'All your current data will be synced\nwith the selected account',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.subtitle.copyWith(
-                          color: Colors.black,
-                        ),
+                    style: Theme.of(context).textTheme.subtitle.copyWith(),
                   ),
                 SizedBox(height: 24),
                 GoogleSignInButton(

@@ -26,16 +26,13 @@ class _CustomAmountOnboardingPopupState extends State<CustomAmountOnboardingPopu
                   style: Theme.of(context).textTheme.title.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
-                        color: Colors.black,
                       ),
                 ),
                 smallSpace,
                 Text(
                   'change the amount field with your custom amount',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.subtitle.copyWith(
-                        color: Colors.black,
-                      ),
+                  style: Theme.of(context).textTheme.subtitle.copyWith(),
                 ),
                 largeSpace,
                 Padding(
