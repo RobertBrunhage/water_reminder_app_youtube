@@ -1,62 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:water_reminder_app/src/global_blocs/app_bloc.dart';
+import 'package:water_reminder_app/src/global_blocs/auth/auth.dart';
+import 'package:water_reminder_app/src/global_blocs/theme_changer.dart';
+import 'package:water_reminder_app/src/root_page.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(WaterReminderApp());
 
-class MyApp extends StatelessWidget {
+final lightTheme = ThemeData.light().copyWith(
+  primaryColor: Colors.white,
+  accentColor: Colors.blue,
+  primaryIconTheme: IconThemeData(color: Colors.black),
+);
+
+final darkTheme = ThemeData.dark().copyWith(
+  primaryColor: Colors.white,
+  accentColor: Colors.blue,
+  primaryIconTheme: IconThemeData(color: Colors.white),
+);
+
+class WaterReminderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    return MultiProvider(
+      providers: [
+        Provider<Auth>(
+          builder: (_) => Auth(),
+        ),
+        Provider<AppBloc>(
+          builder: (_) => AppBloc(),
+          dispose: (_, appBloc) => appBloc.dispose(),
+        ),
+        ChangeNotifierProvider<ThemeChanger>(
+          builder: (_) => ThemeChanger(),
+        ),
+      ],
+      child: MaterialAppWithTheme(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class MaterialAppWithTheme extends StatelessWidget {
+  const MaterialAppWithTheme({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+    final themeChanger = Provider.of<ThemeChanger>(context);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Water Reminder',
+      theme: themeChanger.theme,
+      home: RootPage(),
     );
   }
 }
